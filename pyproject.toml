@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "suscape-devkit"
+version = "0.0.1"
+authors = [
+  { name="naurril", email="naurril@gmail.com" },
+]
+description = "suscape dataset devkit"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://suscape.com"
+"Bug Tracker" = "https://github.com/naurril/suscape-devkit/issues"
