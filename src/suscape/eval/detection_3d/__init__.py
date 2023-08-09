@@ -1,1 +1,7 @@
-from .evaluate_3d import DetEval3D
+# coding:utf-8
+
+'''
+Name  : __init__.py.py
+Author: Kaipin Liu
+Desc:
+'''

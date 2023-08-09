@@ -5,8 +5,8 @@ Name  : accumulate.py
 Author: Tim Liu
 '''
 
-from eval.detection_3d.utils import group_by_key
-from eval.detection_3d.get_iou import *
+from .utils import group_by_key
+from .get_iou import *
 
 def get_envelope(precisions):
     """

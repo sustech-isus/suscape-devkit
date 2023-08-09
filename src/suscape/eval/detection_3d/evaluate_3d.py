@@ -9,12 +9,11 @@ Desc:
 
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../')
 import numpy as np
-from dataset import Dataset
-from devkit_utils.common_utils import get_whole_path,loadjson,get_name_list
-from datapackage.box import Box
-from eval.detection_3d.accumulate import eval
+from ...dataset.dataset import Dataset
+from ...utils.common_utils import get_whole_path,loadjson,get_name_list
+from ...data.box import Box
+from ...eval.detection_3d.accumulate import eval
 
 class DetEval3D(object):
     '''
