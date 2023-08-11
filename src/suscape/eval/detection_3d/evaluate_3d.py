@@ -9,11 +9,12 @@ Desc:
 
 import sys
 import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../')
 import numpy as np
-from ...dataset.dataset import Dataset
+from ...dataset import Dataset
 from ...utils.common_utils import get_whole_path,loadjson,get_name_list
 from ...data.box import Box
-from ...eval.detection_3d.accumulate import eval
+from .accumulate import eval
 
 class DetEval3D(object):
     '''
@@ -86,8 +87,8 @@ class DetEval3D(object):
         res_info = loadjson(res_json_path)
         res_eval = []
         for frame in res_info:
-            name = frame['name']
-            bboxes = frame['det_res'] # [{psr:{'position':,'scale':,'rotation':},'score':,'obj_type':},...]
+            name = frame['scene'] + '_' + frame['frame']
+            bboxes = frame['objs'] # [{psr:{'position':,'scale':,'rotation':},'score':,'obj_type':},...]
             for info in bboxes:
                 frame_res_info = {}
                 box = self.get_box(info)
@@ -122,7 +123,7 @@ class DetEval3D(object):
         return metrics
 
 if __name__ == "__main__":
-    eval_test = DetEval3D('./example/3d_metric',["Car"])
+    eval_test = DetEval3D('./example/3d_metric',["Car","Pedestrian"])
     metric = eval_test.eval('./metric_test/3d/res.json')
     for key in metric.keys():
         print(key, ':', metric[key])

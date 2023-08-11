@@ -1,7 +1,2 @@
-# coding:utf-8
-
-'''
-Name  : __init__.py.py
-Author: Kaipin Liu
-Desc:
-'''
+from .evaluate import evaluate
+from .evaluate_3d import DetEval3D

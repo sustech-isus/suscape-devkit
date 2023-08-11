@@ -20,7 +20,7 @@ class Box(object):
                  size: List[float], # x,y,z
                  rotation: np.ndarray = np.array([0.00,0.00,0.00]),
                  score: float = 0.00,
-                 obj_id: int = 0,
+                 obj_id: str = "",
                  name: str = None,):
         """
         :param center: Center of box given as x, y, z.
@@ -36,8 +36,9 @@ class Box(object):
         assert len(size) == 3
         assert type(rotation) == np.ndarray
         assert type(score) == float
-        assert type(obj_id) == int
-        assert type(name) == str
+        # assert type(obj_id) == str
+        # print('name', name)
+        # assert type(name) == str
 
         self.center = np.array(center)
         self.scale = np.array(size)
@@ -63,8 +64,8 @@ class Box(object):
         a string representation of the Box object
         :return:
         '''
-        box_str = 'box name：{},score:{:.2f},id:{:d},position:[{.2f},{.2f},{.2f}],scale:[{.2f},{.2f},{.2f}]，' \
-                  'rotation:[{.2f},{.2f},{.2f}]，'
+        box_str = 'box name：{},score:{:.2f},id:{:d},position:[{:.2f},{:.2f},{:.2f}],scale:[{:.2f},{:.2f},{:.2f}]，' \
+                  'rotation:[{:.2f},{:.2f},{:.2f}]，'
         return box_str.format(self.name,self.score,self.obj_id,
                               self.center[0],self.center[1],self.center[2],
                               self.scale[0],self.scale[1],self.scale[2],

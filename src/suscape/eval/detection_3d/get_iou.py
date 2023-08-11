@@ -103,7 +103,8 @@ def get_area_intersection(bbox1, bbox2):
     ground_bbox1 = calculate_ground_bbox_coords(bbox1)
     ground_bbox2 = calculate_ground_bbox_coords(bbox2)
     result = ground_bbox1.intersection(ground_bbox2).area
-    assert result <= bbox1.scale[0] * bbox1.scale[1]
+    assert result <= bbox1.scale[0] * bbox1.scale[1] + 0.0001
+    assert result <= bbox2.scale[0] * bbox2.scale[1] + 0.0001
     return result
 
 def get_intersection(bbox1,bbox2):

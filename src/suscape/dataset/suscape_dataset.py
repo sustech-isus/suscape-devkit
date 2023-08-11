@@ -293,6 +293,13 @@ class SuscapeDataset:
         return scene
 
 
+    def get_frames(self, scene):
+        
+        frames = os.listdir(os.path.join(self.lidar_dir, scene, "lidar"))
+        frames = [os.path.splitext(f)[0] for f in frames]
+        frames.sort()
+        return frames
+    
     def read_label(self, scene, frame):
         "read 3d boxes"
         if not os.path.exists(os.path.join(self.label_dir, scene, 'label')):
@@ -310,7 +317,16 @@ class SuscapeDataset:
             print('label file does not exist', filename)
         return {'objs': []}
 
-
+    def read_all_labels(self):
+        all = []
+        for s in self.get_scene_names():
+            for f in self.get_frames(s):
+                l = self.read_label(s,f)
+                l['scene'] = s
+                l['frame'] = f
+                all.append(l)
+        return all
+    
     def read_image_annotations(self, scene, frame, camera_type, camera_name):
         filename = os.path.join(self.label_fusion_dir, scene, "label_fusion", camera_type, camera_name, frame+".json")   # backward compatible
         if os.path.exists(filename):
