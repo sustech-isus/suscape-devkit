@@ -116,10 +116,12 @@ def eval(gt_info,res_info,class_names,iou_thresholds):
     pred_by_class_name = group_by_key(res_info, 'bbox')
     for class_id,class_name in enumerate(class_names):
         if class_name in pred_by_class_name:
-            recalls, precisions, average_precision = eval_single_class(
-                gt_by_class_name[class_name], pred_by_class_name[class_name],
-                iou_thresholds)
-            average_precisions[class_id, :] = average_precision
+
+            if len(gt_by_class_name[class_name]) > 0:
+                recalls, precisions, average_precision = eval_single_class(
+                    gt_by_class_name[class_name], pred_by_class_name[class_name],
+                    iou_thresholds)
+                average_precisions[class_id, :] = average_precision
     return average_precisions
 
 if __name__ == "__main__":

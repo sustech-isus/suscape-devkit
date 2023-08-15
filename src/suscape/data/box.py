@@ -35,7 +35,7 @@ class Box(object):
         assert len(center) == 3
         assert len(size) == 3
         assert type(rotation) == np.ndarray
-        assert type(score) == float
+        # assert type(score) == float
         # assert type(obj_id) == str
         # print('name', name)
         # assert type(name) == str
