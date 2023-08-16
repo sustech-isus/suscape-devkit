@@ -40,7 +40,7 @@ class SuscapeDataset:
         
         return dataset_cfg
 
-    def get_all_scene_desc(self, scene_pattern):
+    def get_all_scene_desc(self, scene_pattern='.*'):
         
         scenes = self.get_scene_names()
         

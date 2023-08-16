@@ -12,6 +12,10 @@ from ...dataset import SuscapeDataset
 from ...data.box import Box
 from ...eval.detection_3d.accumulate import eval
 
+CLASSES = ['Car', 'Pedestrian', 'ScooterRider', 'Truck', 'Scooter',
+                'Bicycle', 'Van', 'Bus', 'BicycleRider', 
+                'Trimotorcycle',
+                ]
 
 def format_ann_box(box):
         '''
@@ -55,7 +59,7 @@ def flatten_anns(anns):
             ann_list.append(box)
     return ann_list
 
-def evaluate(det, gt, classes):
+def evaluate(det, gt, classes=CLASSES):
     '''
     eval the algorithm to get the mAp
     :param res_json_path: the detection result json file
@@ -76,7 +80,7 @@ def evaluate(det, gt, classes):
     metrics['AP'] = average_precisions.tolist()
     metrics['mAPs'] = mAPs.tolist()
     metrics['mAPs_cate'] = mAPs_cate.tolist()
-    metrics['Final mAP'] = float(final_mAP)
+    metrics['final_mAP'] = float(final_mAP)
 
     metrics_string = f"{'IOU':<15}"
     for i, iou in enumerate(iou_thresholds):
