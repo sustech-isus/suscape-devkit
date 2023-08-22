@@ -6,7 +6,7 @@ import numpy as np
 from .bin_pcd_reader import BinPcdReader
 
 class SuscapeDataset:
-    def __init__(self, root_dir, dir_org='by_scene') -> None:
+    def __init__(self, root_dir, dir_org="") -> None:
         
         cfg = self._build_dataset_cfgs(root_dir, dir_org)
         self.camera_dir = cfg['camera']
@@ -23,10 +23,16 @@ class SuscapeDataset:
 
         pass
 
-    def _build_dataset_cfgs(self, root, dir_org='by_scene'):
+    def _build_dataset_cfgs(self, root, dir_org):
+
+        if dir_org == '':
+            if os.path.exists(root + '/lidar'):
+                dir_org = 'by_data_folder'
+            else:
+                dir_org = 'by_scene'
+
         dataset_cfg={}
         if dir_org == 'by_scene':
-            
             for d in ['lidar',  'label', 'camera', 'calib', 'aux_lidar', 'aux_camera', 'radar', 'desc', 'meta','label_fusion', 'lidar_pose']:
                 dataset_cfg[d] = root
             dataset_cfg['root'] = root
@@ -35,8 +41,6 @@ class SuscapeDataset:
             for d in ['lidar',  'label', 'camera', 'calib', 'aux_lidar', 'aux_camera', 'radar', 'desc', 'meta','label_fusion', 'lidar_pose']:
                 dataset_cfg[d] =(root + '/' + d)
             dataset_cfg['root'] = root
-        else:
-            print("data cfg error.")
         
         return dataset_cfg
 
@@ -120,7 +124,7 @@ class SuscapeDataset:
             lidar2cam = np.matmul(static_calib, trans)
             return lidar2cam
     
-    def get_scene_desc(self, s):
+    def read_desc(self, s):
         scene_dir = os.path.join(self.desc_dir, s)
         desc = {}
         if os.path.exists(os.path.join(scene_dir, "desc.json")):
@@ -368,7 +372,15 @@ class SuscapeDataset:
                 return p
         else:
             return None
-        
+    
+    def read_ego_pose(self, scene, frame):
+        filename = os.path.join(self.lidar_pose_dir, scene, "ego_pose", frame+".json")
+        if (os.path.isfile(filename)):
+            with open(filename,"r") as f:
+                p=json.load(f)
+                return p
+        else:
+            return None
     def read_calib(self, scene, frame):
         'read static calibration, all extrinsics are sensor to lidar_top'
         calib = {}
@@ -409,7 +421,7 @@ class SuscapeDataset:
 
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser(description='start web server for SUSTech POINTS')        
+    parser = argparse.ArgumentParser(description='suscape dataset test')        
     parser.add_argument('data', type=str, help='data folder')
     args = parser.parse_args()
 
