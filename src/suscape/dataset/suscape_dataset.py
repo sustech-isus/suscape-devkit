@@ -355,6 +355,10 @@ class SuscapeScene:
         self.meta = self.read_scene_meta()
 
 
+    def get_image_path(self, camera_type, camera, frame):
+        ext = self.meta[camera_type][camera]['ext']
+        img_file = os.path.join(self.path[camera_type], camera, frame + ext)
+        return img_file
 
     def read_scene_meta(self):
         'read scene metadata give scene path'
