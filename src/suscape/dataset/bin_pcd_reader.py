@@ -47,7 +47,7 @@ class BinPcdReader:
         rowstep = metadata['points']*dtype.itemsize
         # for some reason pcl adds empty space at the end of files
         buf = f.read(rowstep)
-        return np.fromstring(buf, dtype=dtype)
+        return np.frombuffer(buf, dtype=dtype)
     
     def parse_header(self, lines):
         """ Parse header of PCD files.
@@ -56,7 +56,7 @@ class BinPcdReader:
         for ln in lines:
             if ln.startswith('#'.encode()) or len(ln) < 2:
                 continue
-            match = re.match('(\w+)\s+([\w\s\.]+)', ln.decode())
+            match = re.match(r'(\w+)\s+([\w\s\.]+)', ln.decode())
             if not match:
                 warnings.warn("warning: can't understand line: %s" % ln)
                 continue
