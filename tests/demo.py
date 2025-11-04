@@ -91,3 +91,40 @@ for p in pts_2d:
     cv2.circle(image, (int(p[0]), int(p[1])), 1, (0,255,0), -1)
 plt.imshow(image)
 plt.show()
+
+
+# draw 3dboxes on image
+import numpy as np
+frame = scene.meta['frames'][0]
+boxes = scene.get_boxes_by_frame(frame)
+image = cv2.imread(scene.get_image_path("camera", "front", frame))
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+for box in boxes:
+    corners = box3d_to_corners(box)
+    # project corners to image
+    corners_hom = np.hstack((corners, np.ones((8,1))))
+    corners_cam = (lidar2cam @ corners_hom.T).T
+    corners_2d = (intrinsic @ corners_cam[:,:3].T).T
+
+    # filter those behind camera
+    corners_2d = corners_2d[corners_cam[:,2]>0]
+
+    if corners_2d.shape[0] !=8:
+        continue
+
+    corners_2d[:,0] /= corners_2d[:,2]
+    corners_2d[:,1] /= corners_2d[:,2]  
+    corners = corners_2d[:, :2]
+    for p in corners:
+        cv2.circle(image, (int(p[0]), int(p[1])), 1, (0,255,0), -1)
+    # draw lines
+    for i,j in [(0,1),(1,2),(2,3),(3,0),
+                (4,5),(5,6),(6,7),(7,4),
+                (0,4),(1,5),(2,6),(3,7)]:
+
+        cv2.line(image, (int(corners[i,0]), int(corners[i,1])),
+                 (int(corners[j,0]), int(corners[j,1])), (0,255,0), 2)
+
+plt.imshow(image)
+plt.show()
